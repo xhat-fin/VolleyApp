@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}{{ game.title_game }} - VolleyApp{% endblock %}
+
+{% block content %}
+<div class="game-card">
+    <div class="game-header">
+        <h2>{{ game.title_game }}</h2>
+    </div>
+    
+    <div class="game-detail">
+        <strong>Описание:</strong><br>
+        {% if game.description %}
+            {{ game.description }}
+        {% else %}
+            <em>Описание отсутствует</em>
+        {% endif %}
+    </div>
+    
+    <div class="game-detail">
+        <strong>🔍 Нужно игроков:</strong> {{ game.need_players }}
+    </div>
+    
+    <div class="game-meta">
+        <strong>ID игры:</strong> {{ game.game_id }}<br>
+        <strong>📅 Создана:</strong> {{ game.created_date.strftime('%d.%m.%Y в %H:%M') }}<br>
+        <strong>🔄 Обновлена:</strong> {{ game.updated_date.strftime('%d.%m.%Y в %H:%M') }}
+    </div>
+</div>
+
+<a href="{{ url_for('index') }}" class="back-link">← Назад к списку игр</a>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Главная - VolleyApp{% endblock %}
+
+{% block content %}
+<header>
+    <h1>🏐 VolleyApp</h1>
+    <p>Найдите игру или создайте свою</p>
+</header>
+
+{% for game in games %}
+<div class="game-card">
+    <div class="game-header">
+        <a href="{{ url_for('get_game_by_id', game_id=game.game_id) }}" class="game-link">
+            {{ game.title_game }}
+        </a>
+    </div>
+    
+    <div class="game-detail">
+        {% if game.description %}
+            {{ game.description }}
+        {% else %}
+            <em>Описание отсутствует</em>
+        {% endif %}
+    </div>
+    
+    <div class="game-detail">
+        🔍 Нужно игроков: {{ game.need_players }}
+    </div>
+    
+    <div class="game-meta">
+        ID: {{ game.game_id }} • 
+        Создана: {{ game.created_date.strftime('%d.%m.%Y') }} • 
+        Обновлена: {{ game.updated_date.strftime('%d.%m.%Y') }}
+    </div>
+</div>
+{% else %}
+<div class="game-card">
+    <div style="text-align: center; color: #7f8c8d; padding: 40px;">
+        🏐 Пока нет активных игр
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
