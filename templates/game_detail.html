@@ -3,12 +3,18 @@
 {% block title %}{{ game.title_game }} - VolleyApp{% endblock %}
 
 {% block content %}
+{% if game.massage_error %}
+<h3>{{ game.massage_error }}</h3>
+{% endif %}
+
+<h1>{{ game.title_game }}</h1>
+
 <div class="game-card">
     <div class="game-header">
-        <h2>{{ game.title_game }}</h2>
+        <h2>Информация об игре</h2>
     </div>
-    
-    <div class="game-detail">
+
+    <div style="margin-bottom: 15px;">
         <strong>Описание:</strong><br>
         {% if game.description %}
             {{ game.description }}
@@ -16,11 +22,11 @@
             <em>Описание отсутствует</em>
         {% endif %}
     </div>
-    
-    <div class="game-detail">
+
+    <div style="margin-bottom: 15px;">
         <strong>🔍 Нужно игроков:</strong> {{ game.need_players }}
     </div>
-    
+
     <div class="game-meta">
         <strong>ID игры:</strong> {{ game.game_id }}<br>
         <strong>📅 Создана:</strong> {{ game.created_date.strftime('%d.%m.%Y в %H:%M') }}<br>
@@ -28,5 +34,8 @@
     </div>
 </div>
 
-<a href="{{ url_for('index') }}" class="back-link">← Назад к списку игр</a>
+<div class="actions">
+    <a href="{{ url_for('update_game', game_id=game.game_id) }}" class="btn">Обновить игру</a>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">Назад к списку</a>
+</div>
 {% endblock %}

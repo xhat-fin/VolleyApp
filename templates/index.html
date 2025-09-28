@@ -3,10 +3,12 @@
 {% block title %}Главная - VolleyApp{% endblock %}
 
 {% block content %}
-<header>
-    <h1>🏐 VolleyApp</h1>
-    <p>Найдите игру или создайте свою</p>
-</header>
+<h1>🏐 VolleyApp</h1>
+<p style="text-align: center; margin-bottom: 20px; color: #7f8c8d;">Найдите игру или создайте свою</p>
+
+<div class="actions">
+    <a href="{{ url_for('create_game') }}" class="btn" style="flex: 1;">Создать игру</a>
+</div>
 
 {% for game in games %}
 <div class="game-card">
@@ -15,30 +17,28 @@
             {{ game.title_game }}
         </a>
     </div>
-    
-    <div class="game-detail">
+
+    <div style="margin-bottom: 10px;">
         {% if game.description %}
             {{ game.description }}
         {% else %}
             <em>Описание отсутствует</em>
         {% endif %}
     </div>
-    
-    <div class="game-detail">
-        🔍 Нужно игроков: {{ game.need_players }}
+
+    <div style="margin-bottom: 5px;">
+        <strong>🔍 Нужно игроков:</strong> {{ game.need_players }}
     </div>
-    
+
     <div class="game-meta">
-        ID: {{ game.game_id }} • 
-        Создана: {{ game.created_date.strftime('%d.%m.%Y') }} • 
+        ID: {{ game.game_id }} •
+        Создана: {{ game.created_date.strftime('%d.%m.%Y') }} •
         Обновлена: {{ game.updated_date.strftime('%d.%m.%Y') }}
     </div>
 </div>
 {% else %}
-<div class="game-card">
-    <div style="text-align: center; color: #7f8c8d; padding: 40px;">
-        🏐 Пока нет активных игр
-    </div>
+<div class="empty-state">
+    🏐 Пока нет активных игр
 </div>
 {% endfor %}
 {% endblock %}

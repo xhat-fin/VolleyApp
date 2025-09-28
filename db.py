@@ -29,8 +29,10 @@ class Players(Base):
     __tablename__ = 'player'
 
     player_id = Column(Integer, primary_key=True, index=True)
-    username = Column(String)
+    username = Column(String, nullable=False, unique=True)
+    password = Column(String, nullable=False)
     games = relationship("GameNotes", back_populates='players')
+
 
 
 class GameNotes(Base):
@@ -95,11 +97,75 @@ def insert_game(title_game, description, need_players):
             db.add(game)
             db.commit()
             new_game = {
-                    'game_id': game.game_id,
                     'title_game': game.title_game,
                     'description': game.description,
                     'need_players': game.need_players
                 }
         return new_game
+    except Exception as e:
+        print(e)
+
+
+def update_game(game_id, new_title_game, new_description, new_need_players):
+    try:
+        with Session(autoflush=False, bind=engine) as db:
+            game = db.query(Game).filter(Game.game_id == game_id).first()
+            game.title_game = new_title_game
+            game.description = new_description
+            game.need_players = new_need_players
+            db.commit()
+            new_game = {
+                    'title_game': game.title_game,
+                    'description': game.description,
+                    'need_players': game.need_players
+                }
+            return new_game
+    except Exception as e:
+        print(e)
+
+
+def create_players(username, password_hash):
+    try:
+        with Session(autoflush=False, bind=engine) as db:
+            user = db.query(Players).filter(Players.username == username).first()
+            print(user.player_id)
+            if user.player_id:
+                return {"message": "the user already exists"}
+            user = Players(username=username, password=password_hash)
+            db.add(user)
+            db.commit()
+            return {"message": "user is create"}
+    except Exception as e:
+        print(e)
+
+
+def select_all_users():
+    try:
+        with Session(autoflush=False, bind=engine) as db:
+            users = db.query(Players).order_by(Players.player_id.desc()).all()
+        all_users = []
+        for user in users:
+            all_users.append(
+                {
+                    'player_id': user.player_id,
+                    'username': user.username
+                }
+            )
+        return all_users
+    except Exception as e:
+        print(e)
+
+
+def select_user(username):
+    try:
+        with Session(autoflush=False, bind=engine) as db:
+            user = db.query(Players).filter(Players.username == username).first()
+
+            user_data = {
+                    'player_id': user.player_id,
+                    'username': user.username,
+                    'password_hash': user.password
+                }
+        return user_data
     except Exception as e:
         print(e)

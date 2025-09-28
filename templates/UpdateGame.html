@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Обновить игру - VolleyApp{% endblock %}
+
+{% block content %}
+<h1>✏️ Обновить игру</h1>
+<form action="{{ url_for('update_game', game_id=game.game_id) }}" method="post">
+    <div class="form-group">
+        <label for="title">Название игры:</label>
+        <input type="text" id="title" name="new_title_game" value="{{ game.title_game }}" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="desc">Описание игры:</label>
+        <input type="text" id="desc" name="new_description" value="{{ game.description }}">
+    </div>
+    
+    <div class="form-group">
+        <label for="n_pl">Нужное количество игроков:</label>
+        <input type="number" id="n_pl" name="new_need_players" value="{{ game.need_players }}" required min="1">
+    </div>
+    
+    <div class="actions">
+        <button type="submit" style="flex: 1;">Обновить игру</button>
+        <a href="{{ url_for('get_game_by_id', game_id=game.game_id) }}" class="btn btn-secondary">Отмена</a>
+    </div>
+</form>
+{% endblock %}
